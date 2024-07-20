@@ -16,8 +16,8 @@ public class Post extends BaseModel{
     private Long userId;
     private String url;
     private Long viewersCount;
-    @OneToMany
-    private List<Like> likes;
+
+    private Long likes;
     @OneToMany
     private List<Comment> comments;
 
