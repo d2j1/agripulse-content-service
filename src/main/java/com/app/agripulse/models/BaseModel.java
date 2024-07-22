@@ -29,4 +29,16 @@ public abstract class BaseModel {
     private Date updateDate;
 
 
+    @PrePersist
+    public void prePersist() {
+      createDate = new Date();
+      updateDate = new Date();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updateDate = new Date();
+    }
+
+
 }
