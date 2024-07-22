@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 public class PostDto {
 
+    private Long id;
     private String title;
     private String content;
     private Long userId;
@@ -31,6 +32,7 @@ public class PostDto {
         dto.likes = post.getLikes();
         dto.comments = post.getComments();
         dto.postType = post.getPostType();
+        dto.setId(post.getId());
         return dto;
     }
 
@@ -44,6 +46,8 @@ public class PostDto {
         post.setLikes(dto.likes);
         post.setComments(dto.comments);
         post.setPostType(dto.postType);
+        post.setId(dto.getId());
+
         return post;
     }
 

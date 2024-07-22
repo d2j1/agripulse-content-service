@@ -7,7 +7,6 @@ import com.app.agripulse.models.Post;
 import com.app.agripulse.repository.PostRepository;
 import com.app.agripulse.services.PostService;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +18,6 @@ public class PostServiceImpl implements PostService {
 
     public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
-
     }
 
     @Override
@@ -29,10 +27,7 @@ public class PostServiceImpl implements PostService {
         if(posts.isEmpty()){
             throw new NoPostFound("No posts found", null);
         }
-
         List<PostDto> postDtos = new ArrayList<>();
-
-
         for( Post post : posts){
             postDtos.add(PostDto.fromPost(post));
         }
@@ -65,11 +60,37 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto updatePost(Long id, PostDto postDto) {
-        return null;
+        Optional<Post> postOpt = postRepository.findById(id);
+
+        if( postOpt.isPresent()){
+            Post post = postOpt.get();
+            post.setTitle(postDto.getTitle());
+            post.setPostType(postDto.getPostType());
+            post.setUrl(postDto.getUrl());
+            post.setContent(postDto.getContent());
+            post.setUserId(postDto.getUserId());
+            post.setLikes(postDto.getLikes());
+            post.setComments(postDto.getComments());
+            post.setViewersCount(postDto.getViewersCount());
+
+            Post updatedPost = null;
+            try{
+                updatedPost = postRepository.save(post);
+            }catch(Exception e){
+                throw new SomethingWentWrongException("Something went wrong while saving the post. Please try again");
+            }
+            return PostDto.fromPost( updatedPost);
+        }else{
+            throw new NoPostFound("No post found", id);
+        }
     }
 
     @Override
     public void deletePost(Long id) {
-
+        try{
+        postRepository.deleteById(id);
+        }catch (Exception e){
+            throw new SomethingWentWrongException("Something went wrong while deleting the post. Please try again");
+        }
     }
 }
