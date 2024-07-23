@@ -6,7 +6,6 @@ import com.app.agripulse.exceptions.SomethingWentWrongException;
 import com.app.agripulse.models.Comment;
 import com.app.agripulse.repository.CommentRepository;
 import com.app.agripulse.services.CommentService;
-import org.hibernate.tool.schema.spi.CommandAcceptanceException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -77,14 +76,13 @@ public CommentServiceImpl(CommentRepository commentRepository) {
             Comment comment = commentOpt.get();
             comment.setComment(commentDto.getComment());
 
-            Comment savedComment= null;
-
             try{
-                savedComment = commentRepository.save(comment);
+                Comment savedComment = commentRepository.save(comment);
+                return CommentDto.toDto(savedComment);
             }catch (Exception ex) {
                 throw new SomethingWentWrongException("Something went wrong while saving the comment. Please try again");
             }
-            return CommentDto.toDto(savedComment);
+
         }else{
             throw new CommentNotFoundException("Comment not found", id);
         }

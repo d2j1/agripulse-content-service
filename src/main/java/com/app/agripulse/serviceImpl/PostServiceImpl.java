@@ -6,11 +6,13 @@ import com.app.agripulse.exceptions.SomethingWentWrongException;
 import com.app.agripulse.models.Post;
 import com.app.agripulse.repository.PostRepository;
 import com.app.agripulse.services.PostService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -20,15 +22,32 @@ public class PostServiceImpl implements PostService {
         this.postRepository = postRepository;
     }
 
-    @Override
-    public List<PostDto> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
+//    @Override
+//    public List<PostDto> getAllPosts() {
+//        List<Post> posts = postRepository.findAll();
+//
+//        if(posts.isEmpty()){
+//            throw new NoPostFound("No posts found", null);
+//        }
+//        List<PostDto> postDtos = new ArrayList<>();
+//        for( Post post : posts){
+//            postDtos.add(PostDto.fromPost(post));
+//        }
+//
+//        return postDtos;
+//    }
 
-        if(posts.isEmpty()){
+    @Override
+    public List<PostDto> getAllPosts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postPage = postRepository.findAll(pageable);
+
+        if (postPage.isEmpty()) {
             throw new NoPostFound("No posts found", null);
         }
+
         List<PostDto> postDtos = new ArrayList<>();
-        for( Post post : posts){
+        for (Post post : postPage.getContent()) {
             postDtos.add(PostDto.fromPost(post));
         }
 
@@ -73,13 +92,13 @@ public class PostServiceImpl implements PostService {
             post.setComments(postDto.getComments());
             post.setViewersCount(postDto.getViewersCount());
 
-            Post updatedPost = null;
             try{
-                updatedPost = postRepository.save(post);
+                Post updatedPost = postRepository.save(post);
+                return PostDto.fromPost( updatedPost);
             }catch(Exception e){
                 throw new SomethingWentWrongException("Something went wrong while saving the post. Please try again");
             }
-            return PostDto.fromPost( updatedPost);
+
         }else{
             throw new NoPostFound("No post found", id);
         }

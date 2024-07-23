@@ -1,8 +1,6 @@
 package com.app.agripulse.controller;
 
 import com.app.agripulse.dtos.CommentDto;
-import com.app.agripulse.models.Comment;
-import com.app.agripulse.serviceImpl.CommentServiceImpl;
 import com.app.agripulse.services.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/commnets")
+@RequestMapping("/comments")
 public class CommentController {
 
 private final CommentService commentService;
@@ -51,5 +49,4 @@ private final CommentService commentService;
         commentService.deleteComment(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

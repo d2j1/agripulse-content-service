@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-
     @ExceptionHandler(NoPostFound.class)
     public ResponseEntity<ErrorDetails> noPostFound(NoPostFound ex){
         ErrorDetails errorDetails  = new ErrorDetails(ex.getMessage(), ex.getId());
@@ -20,5 +19,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDetails> somethingWentWrongException(SomethingWentWrongException ex) {
         ErrorDetails errorDetails = new ErrorDetails(ex.getMessage(), null);
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<ErrorDetails> commentNotFoundException(CommentNotFoundException ex) {
+        ErrorDetails errorDetails = new ErrorDetails(ex.getMessage(), null);
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 }
