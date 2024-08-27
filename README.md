@@ -14,11 +14,11 @@ related to agricultural products and services.
 
 - **Post Management**: Allows users to create, retrieve, update, and delete posts related to agricultural products and services.
 - **Comment Management**: Supports CRUD operations for comments on posts.
-- **Pagination**: Provides pagination for retrieving posts to handle large sets of data efficiently.
+- **Pagination**: Provides pagination for retrieving posts to handle large data sets efficiently.
 
 ## Technologies Used
 
-- **Java**: The primary programming language used for developing the service.
+- **Java**: The primary programming language for developing the service.
 - **Spring Boot**: Framework for building and running the microservice.
 - **Spring Data JPA**: Handles data persistence with MySQL.
 - **MySQL**: Database for storing posts and comments.
